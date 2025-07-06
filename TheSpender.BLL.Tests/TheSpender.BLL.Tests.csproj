@@ -4,6 +4,13 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AnalysisMode>Recommended</AnalysisMode>
+        <LangVersion>13</LangVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TheSpender.BLL\TheSpender.BLL.csproj" />
+      <ProjectReference Include="..\TheSpender.TestUtils\TheSpender.TestUtils.csproj" />
+    </ItemGroup>
 
 </Project>
