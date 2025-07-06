@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TheSpender.DAL\TheSpender.DAL.csproj" />
+      <ProjectReference Include="..\..\TheSpender.DAL\TheSpender.DAL.csproj" />
       <ProjectReference Include="..\TheSpender.TestUtils\TheSpender.TestUtils.csproj" />
     </ItemGroup>
 
