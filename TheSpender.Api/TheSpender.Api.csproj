@@ -20,4 +20,8 @@
       <ProjectReference Include="..\TheSpender.BLL\TheSpender.BLL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Telegram.Bot" Version="22.6.0" />
+    </ItemGroup>
+
 </Project>
