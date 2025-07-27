@@ -1,16 +1,22 @@
-﻿using Telegram.Bot.Types;
+﻿using Telegram.Bot;
+using Telegram.Bot.Polling;
+using Telegram.Bot.Types;
 
 namespace TheSpender.Api.Telegram;
 
-public static class TelegramUpdatesHandler
+/// <summary>
+/// Хендлер сообщений от телеграмма.
+/// </summary>
+public class TelegramUpdatesHandler : IUpdateHandler
 {
-    public static void Handle(Update update)
+    public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
-
+        throw new NotImplementedException();
     }
 
-    public static void HandleError(Update update)
+    public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, HandleErrorSource source,
+        CancellationToken cancellationToken)
     {
-
+        throw new NotImplementedException();
     }
 }
