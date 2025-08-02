@@ -3,7 +3,7 @@
 /// <summary>
 /// Настройки интеграции с телеграмм
 /// </summary>
-public class TelegramOptions
+public record TelegramOptions
 {
     /// <summary>
     /// Токен телеграм-бота
@@ -14,4 +14,25 @@ public class TelegramOptions
     /// Используем ли веб-хуки. Влияет на способ интеграции с телеграммом
     /// </summary>
     public bool UseWebhook { get; init; }
+
+    /// <summary>
+    /// Настройки, необходимые при использовании вебхуков от телеграммаю
+    /// </summary>
+    public WebhookOptions? Webhook { get; init; }
+
+    /// <summary>
+    /// Настройки для вебхуков телеграмма
+    /// </summary>
+    public record WebhookOptions
+    {
+        /// <summary>
+        /// Секретный токен, идентифицирующий подписчика
+        /// </summary>
+        public string SecretApiToken { get; init; } = null!;
+
+        /// <summary>
+        /// Домен текущего приложения, на которое необходимо настроить хуки
+        /// </summary>
+        public string Domain { get; init; } = null!;
+    }
 }

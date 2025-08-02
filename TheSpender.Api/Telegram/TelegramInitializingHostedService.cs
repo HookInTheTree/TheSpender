@@ -6,16 +6,16 @@ namespace TheSpender.Api.Telegram;
 
 /// <summary>
 /// Инициализирует интеграцию с телеграммом при запуске приложения.
+/// Пока процесс не закончится, приложение не стартанёт.
 /// </summary>
 public class TelegramInitializingHostedService(
     ITelegramBotClient telegramBot,
-    IUpdateHandler updateHandler,
     IOptions<TelegramOptions> options,
     ILogger<TelegramInitializingHostedService> logger) : IHostedService
 {
     private readonly TelegramOptions _telegramOptions = options.Value;
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation(
             "Starting Telegram hosted service to set up telegram updates handling way. Bot updates handling way: [{HandlingWay}]",
@@ -23,45 +23,43 @@ public class TelegramInitializingHostedService(
 
         if (_telegramOptions.UseWebhook)
         {
-            SetWebHook(cancellationToken);
+            await SetWebHook(cancellationToken);
         }
         else
         {
             SetLongPolling(cancellationToken);
         }
 
-        return Task.CompletedTask;
+        logger.LogInformation("Telegram updates handling way successfully setted");
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation(
-            "Starting Telegram hosted service to set up telegram updates handling way. Bot updates handling way: [{HandlingWay}]",
-            _telegramOptions.UseWebhook ? "webhooks" : "long polling");
+        logger.LogInformation("Stopping the app. Removing telegram updates handling way.");
 
         if (_telegramOptions.UseWebhook)
         {
-            RemoveWebHook(cancellationToken);
+            await RemoveWebHook(cancellationToken);
         }
-
-        return Task.CompletedTask;
     }
 
     private void SetLongPolling(CancellationToken cancellationToken) =>
         telegramBot.StartReceiving(
-            updateHandler: updateHandler,
+            updateHandler: TelegramUpdatesHandler.HandleUpdateAsync,
+            errorHandler: TelegramUpdatesHandler.HandleErrorAsync,
             cancellationToken: cancellationToken
         );
 
-    private void SetWebHook(CancellationToken cancellationToken)
+    private Task SetWebHook(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var webnookUrl = $"https://{_telegramOptions.Webhook!.Domain}{TelegramConstants.WebhooksHandlingApiRoute}";
+
+        return telegramBot.SetWebhook(webnookUrl,
+            secretToken: _telegramOptions.Webhook.SecretApiToken,
+            cancellationToken: cancellationToken);
     }
 
-    private void RemoveWebHook(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-
+    private Task RemoveWebHook(CancellationToken cancellationToken) =>
+        telegramBot.DeleteWebhook(false,
+            cancellationToken);
 }
