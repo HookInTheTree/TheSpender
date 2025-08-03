@@ -8,7 +8,7 @@ public record TelegramOptions
     /// <summary>
     /// Токен телеграм-бота
     /// </summary>
-    public string BotToken { get; init; }
+    public required string BotToken { get; init; }
 
     /// <summary>
     /// Используем ли веб-хуки. Влияет на способ интеграции с телеграммом
@@ -28,11 +28,11 @@ public record TelegramOptions
         /// <summary>
         /// Секретный токен, идентифицирующий подписчика
         /// </summary>
-        public string SecretApiToken { get; init; } = null!;
+        public required string SecretApiToken { get; init; } = null!;
 
         /// <summary>
         /// Домен текущего приложения, на которое необходимо настроить хуки
         /// </summary>
-        public string Domain { get; init; } = null!;
+        public required string Domain { get; init; } = null!;
     }
 }

@@ -10,6 +10,7 @@ namespace TheSpender.Api.Telegram;
 /// </summary>
 public class TelegramInitializingHostedService(
     ITelegramBotClient telegramBot,
+    IServiceProvider serviceProvider,
     IOptions<TelegramOptions> options,
     ILogger<TelegramInitializingHostedService> logger) : IHostedService
 {
@@ -27,7 +28,7 @@ public class TelegramInitializingHostedService(
         }
         else
         {
-            SetLongPolling(cancellationToken);
+            await SetLongPolling(cancellationToken);
         }
 
         logger.LogInformation("Telegram updates handling way successfully setted");
@@ -43,12 +44,16 @@ public class TelegramInitializingHostedService(
         }
     }
 
-    private void SetLongPolling(CancellationToken cancellationToken) =>
+    private async Task SetLongPolling(CancellationToken cancellationToken)
+    {
+        await using var scope = serviceProvider.CreateAsyncScope();
+        var updatesHandler = scope.ServiceProvider.GetRequiredService<IUpdateHandler>();
+        
         telegramBot.StartReceiving(
-            updateHandler: TelegramUpdatesHandler.HandleUpdateAsync,
-            errorHandler: TelegramUpdatesHandler.HandleErrorAsync,
+            updateHandler: updatesHandler,
             cancellationToken: cancellationToken
         );
+    }
 
     private Task SetWebHook(CancellationToken cancellationToken)
     {

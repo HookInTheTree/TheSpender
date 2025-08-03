@@ -4,11 +4,13 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+		<OutputType>exe</OutputType>
+	</PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\TheSpender.Api\TheSpender.Api.csproj" />
-      <ProjectReference Include="..\TheSpender.TestUtils\TheSpender.TestUtils.csproj" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+		<ProjectReference Include="..\..\TheSpender.Api\TheSpender.Api.csproj" />
+		<ProjectReference Include="..\TheSpender.TestUtils\TheSpender.TestUtils.csproj" />
     </ItemGroup>
 
 </Project>

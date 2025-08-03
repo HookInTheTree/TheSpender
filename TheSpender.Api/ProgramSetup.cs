@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Telegram.Bot;
+using Telegram.Bot.Polling;
 using TheSpender.Api.Telegram;
 using TheSpender.DAL;
 
@@ -21,6 +22,7 @@ internal static class ProgramSetup
                 var options = provider.GetRequiredService<IOptions<TelegramOptions>>().Value;
                 return new TelegramBotClient(options.BotToken, client);
         });
+        services.AddScoped<IUpdateHandler, TelegramUpdatesHandler>();
         services.AddHostedService<TelegramInitializingHostedService>();
     }
 
