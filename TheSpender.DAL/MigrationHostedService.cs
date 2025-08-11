@@ -10,11 +10,11 @@ namespace TheSpender.DAL;
 /// Пока процесс миграции не закончится, приложение не стартанёт.
 /// </summary>
 /// <param name="scopeFactory"></param>
-internal sealed class MigrationHostedService(IServiceScopeFactory scopeFactory) : IHostedService
+internal sealed class MigrationHostedService(IServiceProvider serviceProvider) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using var scope = scopeFactory.CreateScope();
+        await using var scope = serviceProvider.CreateAsyncScope();
 
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<MigrationHostedService>>();
         var dbContext = scope.ServiceProvider.GetRequiredService<SpenderDbContext>();

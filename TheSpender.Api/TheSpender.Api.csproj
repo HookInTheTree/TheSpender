@@ -8,6 +8,7 @@
         <RootNamespace>TheSpender.Api</RootNamespace>
         <AnalysisMode>Recommended</AnalysisMode>
         <LangVersion>13</LangVersion>
+        <UserSecretsId>b1adcf9f-1f4a-4031-b294-2608f58654b8</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,6 +19,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TheSpender.BLL\TheSpender.BLL.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Telegram.Bot" Version="22.6.0" />
     </ItemGroup>
 
 </Project>
