@@ -1,11 +1,14 @@
-using TheSpender.DAL;
+using TheSpender.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDataAccessLayer(builder.Configuration);
+ProgramSetup.AddDatabase(builder.Services, builder.Configuration);
+ProgramSetup.AddTelegram(builder.Services, builder.Configuration);
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.MapControllers();
 app.UseHttpsRedirection();
 
 app.Run();
