@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
-using TheSpender.Api.Telegram;
+using TheSpender.TGL;
 
 namespace TheSpender.Api.Controllers;
 

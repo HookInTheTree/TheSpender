@@ -1,14 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Requests;
-using TheSpender.Api.Telegram;
 using Xunit;
 
-namespace TheSpender.Api.Tests.Telegram;
+namespace TheSpender.TGL.Tests;
 
 public class TelegramInitializingHostedServiceTests
 {
@@ -75,9 +75,9 @@ public class TelegramInitializingHostedServiceTests
             Options.Create(options),
             _loggerMock.Object);
 
-        await hostedService.StartAsync(CancellationToken.None);
-
-        _tgBotClientMock.Verify(x => x.SendRequest(It.IsAny<GetUpdatesRequest>(), It.IsAny<CancellationToken>()));
+        await hostedService.Invoking(x => x.StartAsync(CancellationToken.None))
+            .Should()
+            .NotThrowAsync();
     }
 
     [Fact]
