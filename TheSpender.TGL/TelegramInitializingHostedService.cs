@@ -1,14 +1,17 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 
-namespace TheSpender.Api.Telegram;
+namespace TheSpender.TGL;
 
 /// <summary>
 /// Инициализирует интеграцию с телеграммом при запуске приложения.
 /// Пока процесс не закончится, приложение не стартанёт.
 /// </summary>
-public class TelegramInitializingHostedService(
+internal sealed class TelegramInitializingHostedService(
     ITelegramBotClient telegramBot,
     IServiceProvider serviceProvider,
     IOptions<TelegramOptions> options,
@@ -48,7 +51,7 @@ public class TelegramInitializingHostedService(
     {
         await using var scope = serviceProvider.CreateAsyncScope();
         var updatesHandler = scope.ServiceProvider.GetRequiredService<IUpdateHandler>();
-        
+
         telegramBot.StartReceiving(
             updateHandler: updatesHandler,
             cancellationToken: cancellationToken

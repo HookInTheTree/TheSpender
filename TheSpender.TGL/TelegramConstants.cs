@@ -1,4 +1,4 @@
-﻿namespace TheSpender.Api.Telegram;
+﻿namespace TheSpender.TGL;
 
 /// <summary>
 /// Константы, необходимые для интеграции с телеграммом
