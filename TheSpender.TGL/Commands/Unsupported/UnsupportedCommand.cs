@@ -4,6 +4,9 @@ using TheSpender.TGL.Extensions;
 
 namespace TheSpender.TGL.Commands.Unsupported;
 
+/// <summary>
+/// Команда, отправляемая при получении сообщения, которое наш бот не может обработать.
+/// </summary>
 internal sealed class UnsupportedCommand(ITelegramBotClient botClient) : ICommand
 {
     public string CommandName => CommandNames.UnsupportedCommand;
