@@ -87,6 +87,7 @@ jobs:
           echo "### ❌ Auto-merge Failed" >> $GITHUB_STEP_SUMMARY
           echo "Manual conflict resolution required" >> $GITHUB_STEP_SUMMARY
           echo "Branch is ${{ steps.check_merge.outputs.behind_count }} commits behind master" >> $GITHUB_STEP_SUMMARY
+        fi
         
   build-and-test:
     runs-on: ubuntu-latest
