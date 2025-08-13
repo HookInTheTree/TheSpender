@@ -2,18 +2,92 @@ name: .NET Build and Test
 
 on:
   push:
-    branches: [ master, test ]
+    branches: [ master, test, 'feature/**' ]
   pull_request:
-    branches: [ master, test ]
+    branches: [ master, test, 'feature/**' ]
   workflow_dispatch:
 
 env:
   DOTNET_VERSION: '9.0.x'
-  DOTNET_NOLOGO: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
+  sync-with-master:
+    runs-on: ubuntu-latest
+    # Выполняем только для feature веток
+    if: startsWith(github.ref, 'refs/heads/feature/') || (github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/'))
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Получаем полную историю для merge
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Configure Git
+      run: |
+        git config user.name "GitHub Actions Bot"
+        git config user.email "actions@github.com"
+        
+    - name: Check if branch is up-to-date with master
+      id: check_merge
+      run: |
+        # Получаем последние изменения из origin
+        git fetch origin master
+        
+        # Проверяем, есть ли коммиты в master, которых нет в текущей ветке
+        BEHIND_COUNT=$(git rev-list --count HEAD..origin/master)
+        
+        if [ "$BEHIND_COUNT" -eq "0" ]; then
+          echo "✅ Branch is up-to-date with master"
+          echo "needs_merge=false" >> $GITHUB_OUTPUT
+        else
+          echo "⚠️ Branch is $BEHIND_COUNT commits behind master"
+          echo "needs_merge=true" >> $GITHUB_OUTPUT
+          echo "behind_count=$BEHIND_COUNT" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Attempt auto-merge from master
+      if: steps.check_merge.outputs.needs_merge == 'true'
+      id: merge
+      run: |
+        echo "📝 Attempting to merge master into current branch..."
+        
+        # Пытаемся выполнить merge
+        if git merge origin/master --no-edit; then
+          echo "✅ Successfully merged master into current branch"
+          echo "merge_success=true" >> $GITHUB_OUTPUT
+          
+          # Проверяем, есть ли изменения для push
+          if [ -n "$(git status --porcelain)" ] || [ -n "$(git diff HEAD origin/${{ github.ref_name }})" ]; then
+            echo "📤 Pushing merged changes..."
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+        else
+          echo "❌ Merge conflict detected!"
+          echo "merge_success=false" >> $GITHUB_OUTPUT
+          
+          # Показываем информацию о конфликтах
+          echo "::error::Automatic merge failed. Manual intervention required."
+          echo "Conflicted files:"
+          git diff --name-only --diff-filter=U
+          
+          exit 1
+        fi
+        
+    - name: Merge summary
+      if: always()
+      run: |
+        if [ "${{ steps.check_merge.outputs.needs_merge }}" == "false" ]; then
+          echo "### ✅ Branch Status" >> $GITHUB_STEP_SUMMARY
+          echo "Branch is up-to-date with master" >> $GITHUB_STEP_SUMMARY
+        elif [ "${{ steps.merge.outputs.merge_success }}" == "true" ]; then
+          echo "### ✅ Auto-merge Successful" >> $GITHUB_STEP_SUMMARY
+          echo "Successfully merged ${{ steps.check_merge.outputs.behind_count }} commits from master" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "### ❌ Auto-merge Failed" >> $GITHUB_STEP_SUMMARY
+          echo "Manual conflict resolution required" >> $GITHUB_STEP_SUMMARY
+          echo "Branch is ${{ steps.check_merge.outputs.behind_count }} commits behind master" >> $GITHUB_STEP_SUMMARY
+        
   build-and-test:
     runs-on: ubuntu-latest
     
