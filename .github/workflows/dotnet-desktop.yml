@@ -91,6 +91,8 @@ jobs:
         
   build-and-test:
     runs-on: ubuntu-latest
+    needs: [sync-with-master]
+    if: always() && (needs.sync-with-master.result == 'success' || needs.sync-with-master.result == 'skipped')
     
     steps:
     - name: Checkout code
