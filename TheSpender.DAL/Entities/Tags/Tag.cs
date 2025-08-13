@@ -1,8 +1,7 @@
-﻿namespace TheSpender.DAL.Entities
+﻿namespace TheSpender.DAL.Entities.Tags
 {
-    public class Tag
+    public class Tag : BaseEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int CategoryId { get; set; }
     }
