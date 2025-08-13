@@ -42,8 +42,3 @@ jobs:
       
     - name: Run tests
       run: dotnet test --configuration Release --no-build --verbosity normal
-        name: test-results
-        path: |
-          **/*.trx
-          **/coverage.cobertura.xml
-        retention-days: 30
