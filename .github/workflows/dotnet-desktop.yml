@@ -52,11 +52,3 @@ jobs:
           **/*.trx
           **/coverage.cobertura.xml
         retention-days: 30
-        
-    - name: Generate code coverage report
-      uses: danielpalme/ReportGenerator-GitHub-Action@5
-      if: always()
-      with:
-        reports: '**/coverage.cobertura.xml'
-        targetdir: 'coveragereport'
-        reporttypes: 'HtmlInline;Cobertura;MarkdownSummary'
