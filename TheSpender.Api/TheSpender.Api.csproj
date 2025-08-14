@@ -18,15 +18,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TheSpender.BLL\TheSpender.BLL.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Telegram.Bot" Version="22.6.0" />
+      <ProjectReference Include="..\TheSpender.TGL\TheSpender.TGL.csproj" />
     </ItemGroup>
 
 </Project>
