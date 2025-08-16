@@ -25,48 +25,26 @@ namespace TheSpender.DAL.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "category_types", new[] { "income", "expense" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("TheSpender.DAL.Entities.BaseEntity", b =>
+            modelBuilder.Entity("TheSpender.DAL.Entities.Categories.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("character varying(13)");
-
-                    b.Property<DateTimeOffset>("ModifiedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BaseEntity");
-
-                    b.HasDiscriminator().HasValue("BaseEntity");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("TheSpender.DAL.Entities.Categories.Category", b =>
-                {
-                    b.HasBaseType("TheSpender.DAL.Entities.BaseEntity");
-
                     b.Property<CategoryTypes>("CategoryType")
                         .HasColumnType("\"categoryTypes\"");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -75,15 +53,22 @@ namespace TheSpender.DAL.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasDiscriminator().HasValue("Category");
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("TheSpender.DAL.Entities.Operations.Operation", b =>
                 {
-                    b.HasBaseType("TheSpender.DAL.Entities.BaseEntity");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
@@ -95,6 +80,9 @@ namespace TheSpender.DAL.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("OperationNumber")
                         .HasColumnType("integer");
 
@@ -104,50 +92,54 @@ namespace TheSpender.DAL.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("IsDeleted")
-                                .HasColumnName("Operation_IsDeleted");
+                    b.HasKey("Id");
 
-                            t.Property("UserId")
-                                .HasColumnName("Operation_UserId");
-                        });
-
-                    b.HasDiscriminator().HasValue("Operation");
+                    b.ToTable("Operations");
                 });
 
             modelBuilder.Entity("TheSpender.DAL.Entities.Tags.Tag", b =>
                 {
-                    b.HasBaseType("TheSpender.DAL.Entities.BaseEntity");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.ToTable("BaseEntity", t =>
-                        {
-                            t.Property("CategoryId")
-                                .HasColumnName("Tag_CategoryId");
+                    b.HasKey("Id");
 
-                            t.Property("Name")
-                                .HasColumnName("Tag_Name");
-                        });
-
-                    b.HasDiscriminator().HasValue("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("TheSpender.DAL.Entities.Users.User", b =>
                 {
-                    b.HasBaseType("TheSpender.DAL.Entities.BaseEntity");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ClientId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

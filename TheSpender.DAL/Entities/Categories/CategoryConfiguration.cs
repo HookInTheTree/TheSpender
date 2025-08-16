@@ -12,6 +12,8 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(c => c.CategoryType).IsRequired();
         builder.Property(c => c.IsDefault).HasDefaultValue(false);
         builder.Property(c => c.IsDeleted).HasDefaultValue(false);
+        builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
+        builder.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
 
         builder.HasOne<User>()
                 .WithMany()

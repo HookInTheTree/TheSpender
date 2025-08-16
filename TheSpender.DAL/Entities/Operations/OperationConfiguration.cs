@@ -14,6 +14,8 @@ public class OperationConfiguration : IEntityTypeConfiguration<Operation>
         builder.Property(o => o.SumOfMoney).IsRequired();
         builder.Property(o => o.OperationNumber).IsRequired();
         builder.Property(o => o.IsDeleted).HasDefaultValue(false);
+        builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
+        builder.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
 
         builder.HasOne<User>()
               .WithMany()
