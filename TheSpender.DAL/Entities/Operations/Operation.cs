@@ -1,5 +1,8 @@
 ﻿namespace TheSpender.DAL.Entities.Operations
 {
+    /// <summary>
+    /// Финансовая операция (доход или расход).
+    /// </summary>
     public class Operation : BaseEntity
     {
         public int UserId { get; set; }
