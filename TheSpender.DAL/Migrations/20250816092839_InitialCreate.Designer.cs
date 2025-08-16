@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheSpender.DAL;
@@ -12,9 +13,11 @@ using TheSpender.DAL.Entities.Categories;
 namespace TheSpender.DAL.Migrations
 {
     [DbContext(typeof(SpenderDbContext))]
-    partial class SpenderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250816092839_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
