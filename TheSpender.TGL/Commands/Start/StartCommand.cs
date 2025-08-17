@@ -1,5 +1,7 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using TheSpender.BLL.Services.Users;
+using TheSpender.DAL;
 using TheSpender.TGL.Extensions;
 
 namespace TheSpender.TGL.Commands.Start;
@@ -7,13 +9,17 @@ namespace TheSpender.TGL.Commands.Start;
 /// <summary>
 /// Приветственная команда. Отправляется при получении ботом сообщения /start
 /// </summary>
-internal sealed class StartCommand(ITelegramBotClient botClient) : ICommand
+internal sealed class StartCommand(
+    IUserService userService,
+    ITelegramBotClient botClient) : ICommand
 {
     public string CommandName => CommandNames.Start;
 
     public async Task Execute(Update update, CancellationToken cancellationToken)
     {
         var chatId = update.GetChatId();
+
+        await userService.CreateUser(chatId, cancellationToken);
 
         await botClient.SendMessage(
             chatId,

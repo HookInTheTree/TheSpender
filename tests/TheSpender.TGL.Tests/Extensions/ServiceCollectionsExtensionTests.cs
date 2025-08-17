@@ -9,7 +9,7 @@ using Xunit;
 
 namespace TheSpender.TGL.Tests.Extensions;
 
-public class ServicesExtensionsTests
+public class ServiceCollectionsExtensionTests
 {
     [Fact]
     public void AddTelegramLayer_CorrectConfiguration_ServiceCollectionConfiguredCorrectly()
