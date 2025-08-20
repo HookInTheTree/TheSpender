@@ -20,12 +20,6 @@ public class SpenderDbContext(DbContextOptions<SpenderDbContext> options): DbCon
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<BaseEntity>(entity =>
-        {
-            entity.HasKey(u => u.Id);
-            entity.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
-            entity.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
-        });
 
         builder.HasPostgresEnum<CategoryTypes>();
 
