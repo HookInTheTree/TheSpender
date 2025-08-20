@@ -11,6 +11,7 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
         builder.Property(t => t.Name).IsRequired();
         builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
         builder.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
+        builder.Property(e => e.IsDeleted).HasDefaultValue(false);
 
         builder.HasOne<Category>()
               .WithMany()
