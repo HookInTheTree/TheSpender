@@ -10,6 +10,7 @@ namespace TheSpender.TGL.Commands.Start;
 /// Приветственная команда. Отправляется при получении ботом сообщения /start
 /// </summary>
 internal sealed class StartCommand(
+    SpenderDbContext dbContext,
     IUserService userService,
     ITelegramBotClient botClient) : ICommand
 {
@@ -19,12 +20,24 @@ internal sealed class StartCommand(
     {
         var chatId = update.GetChatId();
 
-        await userService.CreateUser(chatId, cancellationToken);
+        await CreateUser(chatId, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         await botClient.SendMessage(
             chatId,
             HelloMessageText,
             cancellationToken: cancellationToken, replyMarkup: Keyboards.MainMenu);
+    }
+
+    private async Task CreateUser(string chatId, CancellationToken cancellationToken)
+    {
+        var user = await userService.GetUserByClientId(chatId, cancellationToken);
+
+        if (user == null)
+        {
+            user = userService.CreateUser(chatId, cancellationToken);
+            dbContext.Users.Add(user);
+        }
     }
 
     internal const string HelloMessageText = @"

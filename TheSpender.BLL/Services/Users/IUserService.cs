@@ -14,7 +14,7 @@ public interface IUserService
     /// <param name="clientId">Внешний идентификатор пользователя</param>
     /// <param name="cancellationToken"></param>
     /// <returns>Пользователь</returns>
-    public Task<User> CreateUser(string clientId, CancellationToken cancellationToken);
+    public User CreateUser(string clientId, CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение пользователя по внешнему идентификатору

@@ -10,21 +10,13 @@ internal sealed class UsersService(
     SpenderDbContext dbContext,
     IStringsHasher hasher) : IUserService
 {
-    public async Task<User> CreateUser(string clientId, CancellationToken cancellationToken)
+    public User CreateUser(string clientId, CancellationToken cancellationToken)
     {
         var clientHash = hasher.GetHash(clientId);
-        var user = await GetUserByClientHash(clientHash, cancellationToken);
-
-        if (user == null)
+        var user = new User()
         {
-            user = new User()
-            {
-                ClientId = clientHash,
-            };
-
-            dbContext.Users.Add(user);
-        }
-        await dbContext.SaveChangesAsync(cancellationToken);
+            ClientId = clientHash,
+        };
 
         return user;
     }
