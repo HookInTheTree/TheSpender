@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TheSpender.BLL\TheSpender.BLL.csproj" />
+      <ProjectReference Include="..\TheSpender.TGL\TheSpender.TGL.csproj" />
     </ItemGroup>
 
     <ItemGroup>
