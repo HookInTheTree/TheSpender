@@ -1,9 +1,9 @@
-﻿namespace TheSpender.Api.Telegram;
+﻿namespace TheSpender.TGL;
 
 /// <summary>
 /// Настройки интеграции с телеграмм
 /// </summary>
-public record TelegramOptions
+public sealed record TelegramOptions
 {
     /// <summary>
     /// Токен телеграм-бота

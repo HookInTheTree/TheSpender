@@ -1,9 +1,12 @@
-using TheSpender.Api;
+using TheSpender.BLL;
+using TheSpender.DAL;
+using TheSpender.TGL.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-ProgramSetup.AddDatabase(builder.Services, builder.Configuration);
-ProgramSetup.AddTelegram(builder.Services, builder.Configuration);
+builder.Services.AddDataAccessLayer(builder.Configuration);
+builder.Services.AddBusinessLogic(builder.Configuration);
+builder.Services.AddTelegramLayer(builder.Configuration);
 builder.Services.AddControllers();
 
 var app = builder.Build();
