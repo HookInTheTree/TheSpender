@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
-using TheSpender.DAL.Entities;
+using System.Reflection;
 using TheSpender.DAL.Entities.Categories;
 using TheSpender.DAL.Entities.Operations;
 using TheSpender.DAL.Entities.Tags;
@@ -21,7 +21,7 @@ public class SpenderDbContext(DbContextOptions<SpenderDbContext> options): DbCon
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.HasPostgresEnum<CategoryTypes>("categoryTypes");
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
     }
