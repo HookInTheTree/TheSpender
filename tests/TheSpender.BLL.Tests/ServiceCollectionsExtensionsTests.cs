@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using TheSpender.BLL.Helpers;
 using TheSpender.BLL.Services.Users;
 using Xunit;
 
@@ -25,6 +26,10 @@ public class ServiceCollectionsExtensionsTests
         var usersService = services.SingleOrDefault(x => x.ServiceType == typeof(IUserService));
         usersService.Should().NotBeNull();
         usersService.Lifetime.Should().Be(ServiceLifetime.Scoped);
+
+        var stringsHasherService = services.SingleOrDefault(x => x.ServiceType == typeof(IStringsHasher));
+        stringsHasherService.Should().NotBeNull();
+        stringsHasherService.Lifetime.Should().Be(ServiceLifetime.Singleton);
 
         var securityOptions = services.SingleOrDefault(x => x.ServiceType == typeof(IConfigureOptions<SecurityOptions>));
         securityOptions.Should().NotBeNull();
