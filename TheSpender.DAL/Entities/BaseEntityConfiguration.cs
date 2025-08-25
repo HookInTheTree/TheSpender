@@ -10,6 +10,8 @@ namespace TheSpender.DAL.Entities
             builder.Property(e => e.CreatedOn).HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
             builder.Property(e => e.ModifiedOn).HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
             builder.Property(e => e.IsDeleted).HasDefaultValue(false);
+
+            builder.HasQueryFilter(e => e.IsDeleted == false);
         }
     }
 }
