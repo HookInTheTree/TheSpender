@@ -1,0 +1,14 @@
+﻿using TheSpender.DAL.Entities.Categories;
+
+namespace TheSpender.DAL.Entities.Tags
+{
+    /// <summary>
+    /// Тег для детализации категорий (например: кофе, суши для категории еда).
+    /// </summary>
+    public class Tag : BaseEntity
+    {
+        public required string Name { get; set; }
+        public Guid CategoryId { get; set; }
+        public required Category Category { get; set; }
+    }
+}
