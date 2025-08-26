@@ -1,4 +1,5 @@
-﻿using TheSpender.DAL.Entities.Categories;
+﻿using System.ComponentModel.DataAnnotations;
+using TheSpender.DAL.Entities.Categories;
 
 namespace TheSpender.DAL.Entities.Tags
 {
@@ -10,5 +11,7 @@ namespace TheSpender.DAL.Entities.Tags
         public required string Name { get; set; }
         public Guid CategoryId { get; set; }
         public required Category Category { get; set; }
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }

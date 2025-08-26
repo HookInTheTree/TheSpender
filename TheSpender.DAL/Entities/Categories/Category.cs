@@ -1,4 +1,5 @@
-﻿using TheSpender.DAL.Entities.Users;
+﻿using System.ComponentModel.DataAnnotations;
+using TheSpender.DAL.Entities.Users;
 
 namespace TheSpender.DAL.Entities.Categories
 {
@@ -12,6 +13,7 @@ namespace TheSpender.DAL.Entities.Categories
         public User User { get; set; }
         public bool IsDefault { get; set; }
         public CategoryTypes CategoryType { get; set; }
-
+        [Timestamp]
+        public uint Version { get; set; }
     }
 }
