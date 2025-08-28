@@ -13,7 +13,7 @@ using TheSpender.DAL.Entities.Categories;
 namespace TheSpender.DAL.Migrations
 {
     [DbContext(typeof(SpenderDbContext))]
-    [Migration("20250824094513_InitialCreate")]
+    [Migration("20250828094616_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -56,6 +56,12 @@ namespace TheSpender.DAL.Migrations
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
@@ -131,6 +137,12 @@ namespace TheSpender.DAL.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
