@@ -1,20 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TheSpender.DAL.Entities.Categories;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TheSpender.DAL.Entities.Tags;
 
-public class TagConfiguration : IEntityTypeConfiguration<Tag>
+internal sealed class TagConfiguration : BaseEntityConfiguration<Tag>
 {
-    public void Configure(EntityTypeBuilder<Tag> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Tag> builder)
     {
-        builder.Property(t => t.Name).IsRequired();
-        builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
-        builder.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
-
-        builder.HasOne<Category>()
-              .WithMany()
-              .HasForeignKey(t => t.CategoryId)
-              .OnDelete(DeleteBehavior.Cascade);
+        builder.Property(e => e.Name).IsRequired();
     }
 }

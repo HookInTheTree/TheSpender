@@ -19,8 +19,9 @@ public static class ServiceCollectionExtension
         serviceCollection.AddDbContext<SpenderDbContext>(builder =>
             builder.UseNpgsql(
                 configuration.GetConnectionString(nameof(NpgsqlConnection)),
-                o => o.MapEnum<CategoryTypes>("categoryTypes")
-                ));
+                SpenderDbContext.MapEnums
+                )
+            );
 
         serviceCollection.AddHostedService<MigrationHostedService>();
 

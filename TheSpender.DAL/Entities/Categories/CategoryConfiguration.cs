@@ -1,23 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TheSpender.DAL.Entities.Users;
 
 namespace TheSpender.DAL.Entities.Categories;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+internal sealed class CategoryConfiguration : BaseEntityConfiguration<Category>
 {
-    public void Configure(EntityTypeBuilder<Category> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Category> builder)
     {
-        builder.Property(c => c.Name).IsRequired();
-        builder.Property(c => c.CategoryType).IsRequired();
-        builder.Property(c => c.IsDefault).HasDefaultValue(false);
-        builder.Property(c => c.IsDeleted).HasDefaultValue(false);
-        builder.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
-        builder.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
+        builder.Property(e => e.Name).IsRequired();
+        builder.Property(e => e.CategoryType).IsRequired();
+        builder.Property(e => e.IsDefault).HasDefaultValue(false);
 
-        builder.HasOne<User>()
+        builder.HasIndex(e => new { e.UserId, e.CategoryType });
+
+        builder.HasOne(e => e.User)
                 .WithMany()
-                .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
     }
 }

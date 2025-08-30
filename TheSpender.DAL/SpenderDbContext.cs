@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TheSpender.DAL.Entities;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+using System.Reflection;
+using Npgsql.NameTranslation;
 using TheSpender.DAL.Entities.Categories;
 using TheSpender.DAL.Entities.Operations;
 using TheSpender.DAL.Entities.Tags;
@@ -9,9 +11,7 @@ namespace TheSpender.DAL;
 
 public class SpenderDbContext(DbContextOptions<SpenderDbContext> options): DbContext(options)
 {
-    public SpenderDbContext() : this(new DbContextOptions<SpenderDbContext>())
-    {
-    }
+    public SpenderDbContext() : this(new DbContextOptions<SpenderDbContext>()){}
 
     public DbSet<User> Users { get; set; }
     public DbSet<Operation> Operations { get; set; }
@@ -20,15 +20,15 @@ public class SpenderDbContext(DbContextOptions<SpenderDbContext> options): DbCon
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<BaseEntity>(entity =>
-        {
-            entity.HasKey(u => u.Id);
-            entity.Property(e => e.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
-            entity.Property(e => e.ModifiedOn).HasDefaultValueSql("GETUTCDATE()");
-        });
-
-        builder.HasPostgresEnum<CategoryTypes>();
-
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.HasPostgresEnum<CategoryTypes>(nameTranslator:NameTranslator);
         base.OnModelCreating(builder);
     }
+
+    public static void MapEnums(NpgsqlDbContextOptionsBuilder options)
+    {
+        options.MapEnum<CategoryTypes>();
+    }
+
+    internal readonly NpgsqlSnakeCaseNameTranslator NameTranslator =  new NpgsqlSnakeCaseNameTranslator();
 }

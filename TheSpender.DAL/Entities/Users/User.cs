@@ -2,6 +2,6 @@
 {
     public class User : BaseEntity
     {
-        public string ClientId { get; set; } = string.Empty;
+        public required string ClientId { get; set; }
     }
 }
