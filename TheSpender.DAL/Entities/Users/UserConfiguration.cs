@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TheSpender.DAL.Entities.Users;
 
-public class UserConfiguration : BaseEntityConfiguration, IEntityTypeConfiguration<User>
+internal sealed class UserConfiguration : BaseEntityConfiguration<User>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<User> builder)
     {
         builder.Property(u => u.ClientId).IsRequired();
 

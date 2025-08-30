@@ -1,18 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TheSpender.DAL.Entities.Operations;
 
-public class OperationConfiguration : BaseEntityConfiguration, IEntityTypeConfiguration<Operation>
+internal sealed class OperationConfiguration : BaseEntityConfiguration<Operation>
 {
-    public void Configure(EntityTypeBuilder<Operation> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Operation> builder)
     {
         builder.Property(e => e.Description).IsRequired();
         builder.Property(e => e.Date).IsRequired();
         builder.Property(e => e.SumOfMoney).IsRequired();
         builder.Property(e => e.OperationNumber).IsRequired();
 
-
-        builder.HasIndex(e => e.OperationNumber).IsUnique();
+        builder.HasIndex(e => new { e.UserId, e.OperationNumber }).IsUnique();
     }
 }

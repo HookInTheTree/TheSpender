@@ -7,13 +7,13 @@ using TheSpender.DAL.Entities.Categories;
 namespace TheSpender.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("Npgsql:Enum:category_types", "expense,income");
+                .Annotation("Npgsql:Enum:category_types", "income,expense");
 
             migrationBuilder.CreateTable(
                 name: "Users",
@@ -21,9 +21,9 @@ namespace TheSpender.DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ClientId = table.Column<string>(type: "text", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -40,9 +40,9 @@ namespace TheSpender.DAL.Migrations
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
                     CategoryType = table.Column<CategoryTypes>(type: "category_types", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -66,9 +66,9 @@ namespace TheSpender.DAL.Migrations
                     SumOfMoney = table.Column<decimal>(type: "numeric", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     OperationNumber = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -95,9 +95,9 @@ namespace TheSpender.DAL.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
+                    CreatedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW() AT TIME ZONE 'UTC'"),
+                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -121,15 +121,10 @@ namespace TheSpender.DAL.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Operations_OperationNumber",
+                name: "IX_Operations_UserId_OperationNumber",
                 table: "Operations",
-                column: "OperationNumber",
+                columns: new[] { "UserId", "OperationNumber" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Operations_UserId",
-                table: "Operations",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_CategoryId",

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TheSpender.DAL.Entities.Categories;
 
-public class CategoryConfiguration : BaseEntityConfiguration, IEntityTypeConfiguration<Category>
+internal sealed class CategoryConfiguration : BaseEntityConfiguration<Category>
 {
-    public void Configure(EntityTypeBuilder<Category> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Category> builder)
     {
         builder.Property(e => e.Name).IsRequired();
         builder.Property(e => e.CategoryType).IsRequired();

@@ -21,7 +21,7 @@ namespace TheSpender.DAL.Migrations
                 .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "category_types", new[] { "expense", "income" });
+            NpgsqlModelBuilderExtensions.HasPostgresEnum(modelBuilder, "category_types", new[] { "income", "expense" });
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("TheSpender.DAL.Entities.Categories.Category", b =>
@@ -34,7 +34,9 @@ namespace TheSpender.DAL.Migrations
                         .HasColumnType("category_types");
 
                     b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<bool>("IsDefault")
                         .ValueGeneratedOnAdd()
@@ -42,10 +44,14 @@ namespace TheSpender.DAL.Migrations
                         .HasDefaultValue(false);
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -77,7 +83,9 @@ namespace TheSpender.DAL.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
@@ -87,10 +95,14 @@ namespace TheSpender.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<long>("OperationNumber")
                         .HasColumnType("bigint");
@@ -105,10 +117,8 @@ namespace TheSpender.DAL.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("OperationNumber")
+                    b.HasIndex("UserId", "OperationNumber")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Operations");
                 });
@@ -123,13 +133,19 @@ namespace TheSpender.DAL.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -159,13 +175,19 @@ namespace TheSpender.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTimeOffset>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
 
                     b.HasKey("Id");
 

@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TheSpender.DAL.Entities.Tags;
 
-public class TagConfiguration : BaseEntityConfiguration, IEntityTypeConfiguration<Tag>
+internal sealed class TagConfiguration : BaseEntityConfiguration<Tag>
 {
-    public void Configure(EntityTypeBuilder<Tag> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<Tag> builder)
     {
         builder.Property(e => e.Name).IsRequired();
     }
