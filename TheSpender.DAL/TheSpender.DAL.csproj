@@ -36,5 +36,5 @@
         </AssemblyAttribute>
         <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
     </ItemGroup>
-    
+
 </Project>
