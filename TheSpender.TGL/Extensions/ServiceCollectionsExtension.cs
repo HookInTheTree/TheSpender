@@ -7,7 +7,7 @@ using TheSpender.TGL.Commands;
 
 namespace TheSpender.TGL.Extensions;
 
-public static class ServicesExtension
+public static class ServiceCollectionsExtension
 {
     /// <summary>
     /// Регистрируем логику взаимодействия с телеграммом
